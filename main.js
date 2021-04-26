@@ -11,7 +11,8 @@
     var leftscore = 0;
     var rightscore = 0;
 
-    var songPlaying = "";
+    var songPlaying1 = "";
+    var songPlaying2 = "";
 
 
 function preload(){
@@ -66,29 +67,41 @@ function gotposes(results){
         console.log("left hand x is " + leftsoundhandx + " left handy is " + leftsoundhandy);
         console.log("right hand x is " + rightsoundhandx + " right handy is " + rightsoundhandy);
 
-        leftscore = results[0].pose.leftWrist.confidence;
-        rightscore = results[0].pose.rightWrist.confidence;
-
-       
-        if(leftscore > 0.2){
-            Msound2.stop()
-            Msound1.play()
-        }
-        else{
-            Msound1.stop()
-            Msound2.play()
-        }
+        leftscore = results[0].pose.keypoints[9].score;
+        rightscore = results[0].pose.rightWrist[10].score;
        
     }
 }
+
+
 function draw(){
 
     image(camera,0,0,500,500);
 
-    circle(leftsoundhandy,leftsoundhandx,10);
-    fill("red");
+    songPlaying1 = Msound1.isPlaying();
+    songPlaying2 = Msound2.isPlaying();
 
-    circle(rightsoundhandx,rightsoundhandy,10);
-    fill("blue");
+    if(leftscore > 0.2){
+        circle(leftsoundhandy,leftsoundhandx,10);
+        fill("red");
+        Msound2.stop();
+        if(songPlaying1==false){
+            Msound1.play();
+        }
+    }
 
+
+    if(rightscore > 0.2){
+        circle(rightsoundhandy,rightsoundhandx,10);
+        fill("red");
+        Msound1.stop();
+        if(songPlaying2==false){
+        Msound2.play();
+        }
+    }
+}
+
+function stopallmysongs(){
+    Msound1.stop();
+    Msound2.stop();
 }
