@@ -22,18 +22,6 @@ function preload(){
 
 }
 
-function playSound1(){
-
-    Msound1.play()
-
-}
-
-function playSound2(){
-
-    Msound2.play()
-
-}
-
 function setup(){
 
     canvas = createCanvas(500,500);
@@ -68,11 +56,10 @@ function gotposes(results){
         console.log("right hand x is " + rightsoundhandx + " right handy is " + rightsoundhandy);
 
         leftscore = results[0].pose.keypoints[9].score;
-        rightscore = results[0].pose.rightWrist[10].score;
+        rightscore = results[0].pose.keypoints[10].score;
        
     }
 }
-
 
 function draw(){
 
@@ -82,7 +69,7 @@ function draw(){
     songPlaying2 = Msound2.isPlaying();
 
     if(leftscore > 0.2){
-        circle(leftsoundhandy,leftsoundhandx,10);
+        circle(leftsoundhandyx,leftsoundhandy,10);
         fill("red");
         Msound2.stop();
         if(songPlaying1==false){
@@ -92,7 +79,7 @@ function draw(){
 
 
     if(rightscore > 0.2){
-        circle(rightsoundhandy,rightsoundhandx,10);
+        circle(rightsoundhandx,rightsoundhandy,10);
         fill("red");
         Msound1.stop();
         if(songPlaying2==false){
@@ -104,4 +91,11 @@ function draw(){
 function stopallmysongs(){
     Msound1.stop();
     Msound2.stop();
+}
+
+
+function play(){
+    song.play();
+    song.setVolume(1);
+    song.rate(1)
 }
